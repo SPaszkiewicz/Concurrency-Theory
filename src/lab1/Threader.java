@@ -1,3 +1,5 @@
+package lab1;
+
 public class Threader implements Runnable {
     static int numberOfLoops = 100000;
     private int type;

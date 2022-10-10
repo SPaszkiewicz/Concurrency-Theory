@@ -1,3 +1,5 @@
+package lab1;
+
 public class Counter {
     private int number;
     public Counter() {

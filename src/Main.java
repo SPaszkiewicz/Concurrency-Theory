@@ -1,17 +1,36 @@
-import java.sql.Array;
+
 
 public class Main {
-    static int numberOfThreads = 5;
+    static int bufforSize = 20;
+    static int customerNumber = 2;
+    static int producentNmber = 3;
     public static void main(String[] args) throws InterruptedException {
-        Counter counter = new Counter();
-        Threader threaderDecrease = new Threader(0, counter);
-        Threader threaderIncrease = new Threader(1, counter);
-        Thread threadIncrease = new Thread(threaderIncrease);
-        Thread threadDecrease = new Thread(threaderDecrease);
-        threadIncrease.start();
-        threadDecrease.start();
-        threadIncrease.join();
-        threadDecrease.join();
-        counter.show();
+        manyCustomerManyProducerManyBuffor();
+    }
+
+    public static void oneCustomerOneProducerOneBuffor () {
+        Bakery bakery = new Bakery(bufforSize);
+        new Thread(new Customer(bakery)).start();
+        new Thread(new Producent(bakery)).start();
+    }
+
+    public static void manyCustomerManyProducerOneBuffor () {
+        Bakery bakery = new Bakery(1);
+        for (int i = 0; i < customerNumber; i++) {
+            new Thread(new Customer(bakery)).start();
+        }
+        for (int i = 0; i < producentNmber; i++) {
+            new Thread(new Producent(bakery)).start();
+        }
+    }
+
+    public static void manyCustomerManyProducerManyBuffor () {
+        Bakery bakery = new Bakery(bufforSize);
+        for (int i = 0; i < customerNumber; i++) {
+            new Thread(new Customer(bakery)).start();
+        }
+        for (int i = 0; i < producentNmber; i++) {
+            new Thread(new Producent(bakery)).start();
+        }
     }
 }
