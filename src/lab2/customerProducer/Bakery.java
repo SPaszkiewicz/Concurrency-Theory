@@ -1,3 +1,5 @@
+package lab2.customerProducer;
+
 public class Bakery {
     private boolean isFull;
     private int bufforSize;
@@ -14,11 +16,11 @@ public class Bakery {
         this.currentBuffor = 0;
     }
 
-    synchronized void addBread() throws InterruptedException {
+    synchronized void addBread(int portion) throws InterruptedException {
         while (isFull) {
             wait();
         }
-        this.currentBuffor+=1;
+        this.currentBuffor = Math.min(currentBuffor + portion, bufforSize);
         this.isEmpty = false;
         if (this.bufforSize == this.currentBuffor) {
             this.isFull = true;
@@ -26,11 +28,11 @@ public class Bakery {
         notifyAll();
     }
 
-    synchronized void takeBread() throws InterruptedException {
-        while (isEmpty) {
+    synchronized void takeBread(int portion) throws InterruptedException {
+        while (isEmpty || this.currentBuffor - portion < 0) {
             wait();
         }
-        this.currentBuffor -=1;
+        this.currentBuffor -= portion;
         this.isFull = false;
         if (this.currentBuffor == 0) {
             this.isEmpty = true;

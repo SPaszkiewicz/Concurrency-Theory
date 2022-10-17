@@ -1,7 +1,12 @@
+package lab2.customerProducer;
+
 public class Producent implements Runnable {
     private Bakery bakery;
-    public Producent (Bakery bakery) {
+    private int maxFoodPortion;
+
+    public Producent(Bakery bakery, int maxFoodPortion) {
         this.bakery = bakery;
+        this.maxFoodPortion = maxFoodPortion;
     }
 
     @Override
@@ -14,9 +19,10 @@ public class Producent implements Runnable {
                 throw new RuntimeException(e);
             }
             try {
-                this.bakery.addBread();
+                int breadTaken = Main.randomPortion(1, maxFoodPortion);
+                this.bakery.addBread(breadTaken);
                 this.bakery.printBakery();
-                System.out.println("Bread added");
+                System.out.println(breadTaken + " Bread added");
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
