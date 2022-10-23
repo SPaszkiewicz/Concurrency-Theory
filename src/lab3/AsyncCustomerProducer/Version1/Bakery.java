@@ -1,4 +1,4 @@
-package lab3.CustomerProducer;
+package lab3.AsyncCustomerProducer.Version1;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -8,7 +8,7 @@ import static lab3.CustomerProducer.Main.randomPortion;
 
 public class Bakery {
     private boolean isFull;
-    private final int bufforSize;
+    final private int bufforSize;
     private int currentBuffor;
     private boolean isEmpty;
     private final int maxFoodPortion;
@@ -30,15 +30,17 @@ public class Bakery {
     void addBread() throws InterruptedException {
         lock.lock();
         int portion = randomPortion(0, maxFoodPortion);
-        while (isFull || portion + this.currentBuffor > this.bufforSize ) {
+        while (isFull) {
             breadAdding.await();
         }
-        this.isEmpty = false;
-        this.currentBuffor += portion;
-        if (this.bufforSize == this.currentBuffor) {
-            this.isFull = true;
+        if ( portion + this.currentBuffor <= this.bufforSize ) {
+            this.isEmpty = false;
+            this.currentBuffor += portion;
+            if (this.bufforSize == this.currentBuffor) {
+                this.isFull = true;
+            }
+            breadTaking.signal();
         }
-        breadTaking.signal();
         lock.unlock();
     }
 

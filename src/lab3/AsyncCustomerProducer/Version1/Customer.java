@@ -1,4 +1,6 @@
-package lab3.CustomerProducer;
+package lab3.AsyncCustomerProducer.Version1;
+
+
 public class Customer implements Runnable{
     private final Bakery bakery;
     private final int maxFoodPortion;

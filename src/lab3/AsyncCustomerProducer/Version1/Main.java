@@ -1,13 +1,13 @@
-package lab3.CustomerProducer;
+package lab3.AsyncCustomerProducer.Version1;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
-    static int bufforSize = 5;
-    static int customerNumber = 50;
-    static int producentNumber =  5;
+    static int bufforSize = 20;
+    static int customerNumber = 5;
+    static int producentNumber = 5;
 
-    static int foodPortion = 5;
+    static int foodPortion = 20;
 
     public static void main(String[] args) {
         manyCustomerManyProducerManyBuffor();

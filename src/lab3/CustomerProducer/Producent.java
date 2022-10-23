@@ -2,7 +2,7 @@ package lab3.CustomerProducer;
 
 public class Producent implements Runnable {
     private final Bakery bakery;
-    private int maxFoodPortion;
+    private final int maxFoodPortion;
 
     public Producent(Bakery bakery, int maxFoodPortion) {
         this.bakery = bakery;
@@ -14,7 +14,7 @@ public class Producent implements Runnable {
         while (true) {
             System.out.println("Stop baking");
             try {
-                this.bakery.addBread(1);
+                this.bakery.addBread();
                 this.bakery.printBakery();
                 System.out.println("Bread added");
             } catch (InterruptedException e) {
