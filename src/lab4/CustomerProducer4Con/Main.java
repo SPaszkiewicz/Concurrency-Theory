@@ -1,13 +1,13 @@
-package lab3.CustomerProducer;
+package lab4.CustomerProducer4Con;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
-    static int bufforSize = 5;
-    static int customerNumber = 50;
-    static int producentNumber =  50;
+    static int bufforSize = 10000;
+    static int customerNumber = 1;
+    static int producentNumber =  3;
 
-    static int foodPortion = 5;
+    static int foodPortion = 5000;
 
     public static void main(String[] args) {
         manyCustomerManyProducerManyBuffor();
@@ -18,11 +18,12 @@ public class Main {
     }
     public static void manyCustomerManyProducerManyBuffor () {
         Bakery bakery = new Bakery(bufforSize, foodPortion);
+        new Thread(new Producent(bakery, foodPortion, -1)).start();
         for (int i = 0; i < customerNumber; i++) {
-            new Thread(new Customer(bakery, 1)).start();
+            new Thread(new Customer(bakery, foodPortion, i)).start();
         }
         for (int i = 0; i < producentNumber; i++) {
-            new Thread(new Producent(bakery, 1)).start();
+            new Thread(new Producent(bakery, 1, i)).start();
         }
     }
 }
