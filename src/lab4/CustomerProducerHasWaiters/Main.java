@@ -3,14 +3,14 @@ package lab4.CustomerProducerHasWaiters;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
-    static int bufforSize = 10000;
-    static int customerNumber = 1;
-    static int producentNumber =  3;
+    static int bufforSize = 100;
+    static int customerNumber = 5;
+    static int producentNumber =  5;
 
     static int time = 5000;
 
     static boolean isStopped = false;
-    static int foodPortion = 5000;
+    static int foodPortion = 5;
 
     public static void main(String[] args) throws InterruptedException {
         manyCustomerManyProducerManyBuffor();
@@ -29,6 +29,5 @@ public class Main {
         for (int i = 0; i < producentNumber; i++) {
             new Thread(new Producent(bakery, 1, i, timer)).start();
         }
-        timer.startTime();
     }
 }
