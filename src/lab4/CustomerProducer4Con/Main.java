@@ -27,11 +27,3 @@ public class Main {
         }
     }
 }
-// na hasWaiter laduje za duza ilosc procesow dlaczego?
-// Wchodzi producent i nikogo nie ma wiec wiesza sie na pierwszym , wchodzi konsument zjada zasobow czesc i wysyla sygnaly
-// wysyla pierwszy sygnal do przyciwnika, drugi do reszty konsumentow, ten reszty ma przepisac tu i sam opuszcza locka i producent
-// pierwszy zostaje zwolniony i przechodzi na locka i ten z reszty na razie pojdzie w powietrze, to jest najwazniejsze ze konsument wychdozac
-// zwalnia pierwszego producenta i zlosliwie nie wpuszczamy producenta. Pierwszy while czy nie istnieje ktos na pierwszym
-// jezeli zamiast zmiennej boolowskiej zastosujemy has waiters (java) to to jebnie i chuj. Zaglodzenie jak nie wiem co
-// A gdy nie ma zasobow to dochodzi do zakleszczenia BOOOM!
-// Watki konsumentow sie wywalaja
