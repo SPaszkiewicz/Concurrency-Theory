@@ -9,7 +9,6 @@ public class Bakery {
     private final int bufforSize;
     private int currentBuffor;
     private boolean isEmpty;
-    private final int maxFoodPortion;
     private final Lock lock = new ReentrantLock();
     final Condition breadAdding  = lock.newCondition();
     final Condition breadTaking  = lock.newCondition();
@@ -26,7 +25,6 @@ public class Bakery {
         this.isEmpty = true;
         this.bufforSize = bufforSize;
         this.currentBuffor = 0;
-        this.maxFoodPortion = maxFoodPortion;
     }
 
     void addBread(int portion) throws InterruptedException {
