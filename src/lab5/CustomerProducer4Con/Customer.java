@@ -1,4 +1,4 @@
-package lab5.CustomerProducerLocks;
+package lab5.CustomerProducer4Con;
 
 import static lab3.CustomerProducer.Main.randomPortion;
 

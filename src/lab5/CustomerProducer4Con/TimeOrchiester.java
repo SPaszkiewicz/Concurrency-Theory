@@ -1,11 +1,9 @@
-package lab5.CustomerProducerLocks;
+package lab5.CustomerProducer4Con;
 
-import lab5.CustomerProducerLocks.Customer;
-import lab5.CustomerProducerLocks.Producent;
+import lab5.CustomerProducer4Con.Customer;
+import lab5.CustomerProducer4Con.Producent;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class TimeOrchiester {
@@ -15,7 +13,7 @@ public class TimeOrchiester {
     private int[] timeStamps;
 
 
-    public TimeOrchiester (List<Producent> producerThreads, List<Customer> customerThreads, int[] timeStamps) {
+    public TimeOrchiester(List<Producent> producerThreads, List<Customer> customerThreads, int[] timeStamps) {
         this.customerThreads = customerThreads;
         this.producerThreads = producerThreads;
         this.timeStamps = timeStamps;

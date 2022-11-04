@@ -1,18 +1,18 @@
-package lab5.CustomerProducerLocks;
+package lab5.CustomerProducer4Con;
 
 import static lab3.CustomerProducer.Main.randomPortion;
 
-public class Customer implements Runnable{
+public class Producent implements Runnable {
     private final Bakery bakery;
     private final int maxFoodPortion;
+    private int receivedBuffor;
     private final int index;
 
     public int getReceivedBuffor() {
         return receivedBuffor;
     }
 
-    private int receivedBuffor;
-    public Customer (Bakery bakery, int maxFoodPortion, int index) {
+    public Producent(Bakery bakery, int maxFoodPortion, int index) {
         this.bakery = bakery;
         this.maxFoodPortion = maxFoodPortion;
         this.receivedBuffor = 0;
@@ -24,7 +24,7 @@ public class Customer implements Runnable{
         while (true) {
             try {
                 int portion = randomPortion(0, maxFoodPortion);
-                this.bakery.takeBread(portion);
+                this.bakery.addBread(portion);
                 this.receivedBuffor++;
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
@@ -32,4 +32,3 @@ public class Customer implements Runnable{
         }
     }
 }
-

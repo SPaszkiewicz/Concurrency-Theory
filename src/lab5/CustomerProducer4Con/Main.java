@@ -1,4 +1,4 @@
-package lab5.CustomerProducerLocks;
+package lab5.CustomerProducer4Con;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,6 @@ public class Main {
     }
     public static void manyCustomerManyProducerManyBuffor () {
         Bakery bakery = new Bakery(bufforSize);
-
         Producent biggerProducer = new Producent(bakery, foodPortion, -1);
         producerThreads.add(biggerProducer);
         new Thread(biggerProducer).start();

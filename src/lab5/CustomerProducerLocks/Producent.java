@@ -6,6 +6,10 @@ public class Producent implements Runnable {
     private final Bakery bakery;
     private final int maxFoodPortion;
 
+    public int getReceivedBuffor() {
+        return receivedBuffor;
+    }
+
     private int receivedBuffor;
     private final int index;
 
@@ -23,7 +27,6 @@ public class Producent implements Runnable {
                 int portion = randomPortion(0, maxFoodPortion);
                 this.bakery.addBread(portion);
                 this.receivedBuffor++;
-                System.out.println("Bread added " + this.receivedBuffor + " times at " + this.index);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
