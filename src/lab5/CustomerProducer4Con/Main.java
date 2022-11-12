@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
     static int bufforSize = 500;
-    static int customerNumber = 1;
+    static int customerNumber = 2;
     static int producentNumber =  3;
     static int foodPortion = 100;
     static List<Customer> customerThreads = new ArrayList<>();

@@ -1,4 +1,4 @@
-package lab6.ActiveObject;
+package lab6.ActiveObject.core;
 
 public enum PrioritizedQueueState {
     CONSUMER,

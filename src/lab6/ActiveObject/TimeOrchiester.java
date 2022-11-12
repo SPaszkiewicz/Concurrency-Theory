@@ -1,5 +1,8 @@
 package lab6.ActiveObject;
 
+import lab6.ActiveObject.threads.Customer;
+import lab6.ActiveObject.threads.Producent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +20,8 @@ public class TimeOrchiester {
     }
 
     public int operationCounter() {
-        return customerThreads.stream().map(Customer::getReceivedBuffor).reduce(0, Integer::sum) +
-                producerThreads.stream().map(Producent::getReceivedBuffor).reduce(0, Integer::sum);
+        return customerThreads.stream().map(Customer::getReceivedBuffer).reduce(0, Integer::sum) +
+                producerThreads.stream().map(Producent::getReceivedBuffer).reduce(0, Integer::sum);
     }
     public void startProcessing() {
         List<Integer> results = new ArrayList<Integer>();
