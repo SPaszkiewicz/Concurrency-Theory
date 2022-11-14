@@ -34,49 +34,44 @@ public class Scheduler implements Runnable {
 
     public void enqueue(IMethodRequest method) throws InterruptedException {
         queueLock.lock();
-        if (areConsumersBlocked(method) || areProducersBlocked(method)) {
-            prioritizedQueue.add(method);
-        } else {
-            activationQueue.enqueue(method);
-            emptyQueue.signal();
-        }
+        activationQueue.enqueue(method);
+        emptyQueue.signal();
         queueLock.unlock();
     }
 
     public void dispatch() throws InterruptedException {
-        while (true) {
-            this.queueLock.lock();
-            while (this.activationQueue.isEmpty()) {
-                this.emptyQueue.await();
+        if (!prioritizedQueue.isEmpty() && prioritizedQueue.element().guard()) {
+            prioritizedQueue.element().call();
+            if (prioritizedQueue.isEmpty()) {
+                queueState = PrioritizedQueueState.EMPTY;
             }
-            IMethodRequest method;
-            if (!prioritizedQueue.isEmpty() && prioritizedQueue.element().guard()) {
-                method = this.prioritizedQueue.remove();
-                if (prioritizedQueue.isEmpty()) {
-                    queueState = PrioritizedQueueState.EMPTY;
-                }
-            } else {
-                method = this.activationQueue.dequeue();
-            }
+            return;
+        }
+        this.queueLock.lock();
+        while (this.activationQueue.isEmpty()) {
+            this.emptyQueue.await();
+        }
+        IMethodRequest method = this.activationQueue.dequeue();
+        this.queueLock.unlock();
 
-            if (method.guard()) {
-                method.call();
+        if (method.guard()) {
+            method.call();
+        } else {
+            this.prioritizedQueue.add(method);
+            if (method instanceof AddToBuffer) {
+                this.queueState = PrioritizedQueueState.PRODUCER;
             } else {
-                this.prioritizedQueue.add(method);
-                if (method instanceof AddToBuffer) {
-                    this.queueState = PrioritizedQueueState.PRODUCER;
-                } else {
-                    this.queueState = PrioritizedQueueState.CONSUMER;
-                }
+                this.queueState = PrioritizedQueueState.CONSUMER;
             }
-            this.queueLock.unlock();
         }
     }
 
     @Override
     public void run() {
         try {
-            dispatch();
+            while(true){
+                dispatch();
+            }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

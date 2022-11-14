@@ -22,6 +22,11 @@ public class Producent implements Runnable {
     @Override
     public void run() {
         while (true) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             if (this.task == null) {
                 try {
                     int portion = randomPortion(1, maxFoodPortion);

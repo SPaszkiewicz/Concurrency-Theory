@@ -21,6 +21,11 @@ public class Customer implements Runnable{
     @Override
     public void run() {
         while (true) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             if (task == null) {
                 try {
                     int portion = randomPortion(1, maxFoodPortion);

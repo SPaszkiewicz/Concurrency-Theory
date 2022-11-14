@@ -1,0 +1,6 @@
+p/k amount jednak nie :)
+czas wykonania requesty w stosunku do czekania p/k
+
+
+sredni czas wykonania taska
+ilosc wejsc do bufora
