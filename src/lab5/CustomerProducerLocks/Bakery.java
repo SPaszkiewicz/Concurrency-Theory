@@ -10,11 +10,14 @@ public class Bakery {
     private final Lock lockAdding = new ReentrantLock();
     private final Lock lockTaking = new ReentrantLock();
     private final Lock lockFirst = new ReentrantLock();
+
+    private final int time;
     final Condition firstInQueue = lockFirst.newCondition();
 
-    public Bakery (int bufforSize) {
+    public Bakery (int bufforSize, int time) {
         this.bufforSize = bufforSize;
         this.currentBuffor = 0;
+        this.time = time;
     }
 
     void addBread(int portion) throws InterruptedException {
@@ -23,6 +26,7 @@ public class Bakery {
         while (portion + this.currentBuffor > this.bufforSize) {
             firstInQueue.await();
         }
+        Thread.sleep(time);
         this.currentBuffor += portion;
         firstInQueue.signal();
         lockFirst.unlock();
@@ -35,6 +39,7 @@ public class Bakery {
         while (this.currentBuffor - portion < 0) {
             firstInQueue.await();
         }
+        Thread.sleep(time);
         this.currentBuffor -= portion;
         firstInQueue.signal();
         lockFirst.unlock();

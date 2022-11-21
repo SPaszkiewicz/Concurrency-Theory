@@ -15,10 +15,13 @@ public class Proxy {
 
     private final Thread thread;
 
-    public Proxy(int bufferSize) {
+    private int time;
+
+    public Proxy(int bufferSize, TimeOrchiester timeOrchiester, int time) {
         this.buffer = new Buffer(bufferSize);
-        this.servant = new Servant(buffer);
-        this.scheduler = new Scheduler(servant);
+        this.time = time;
+        this.servant = new Servant(buffer, time);
+        this.scheduler = new Scheduler(timeOrchiester);
         this.thread = new Thread(scheduler);
         this.thread.start();
     }
@@ -35,4 +38,7 @@ public class Proxy {
         return future;
     }
 
+    public int statistics() {
+        return servant.addFinished + servant.removeFinished;
+    }
 }

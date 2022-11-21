@@ -1,5 +1,6 @@
 package lab6.ActiveObject.core;
 
+import lab6.ActiveObject.TimeOrchiester;
 import lab6.ActiveObject.methods.AddToBuffer;
 import lab6.ActiveObject.methods.IMethodRequest;
 import lab6.ActiveObject.methods.RemoveFromBuffor;
@@ -13,15 +14,14 @@ public class Scheduler implements Runnable {
     private final ActivationQueue activationQueue;
 
     private final Queue<IMethodRequest> prioritizedQueue;
-    private final Servant servant;
     private PrioritizedQueueState queueState = PrioritizedQueueState.EMPTY;
     private final ReentrantLock queueLock = new ReentrantLock();
     final Condition emptyQueue = queueLock.newCondition();
-
-    public Scheduler(Servant servant) {
+    private final  TimeOrchiester timeOrchiester;
+    public Scheduler(TimeOrchiester timeOrchiester) {
         this.activationQueue = new ActivationQueue();
         this.prioritizedQueue = new LinkedList<>();
-        this.servant = servant;
+        this.timeOrchiester = timeOrchiester;
     }
 
     private boolean areProducersBlocked(IMethodRequest method) {
@@ -69,7 +69,7 @@ public class Scheduler implements Runnable {
     @Override
     public void run() {
         try {
-            while(true){
+            while (!timeOrchiester.isFinished) {
                 dispatch();
             }
         } catch (InterruptedException e) {

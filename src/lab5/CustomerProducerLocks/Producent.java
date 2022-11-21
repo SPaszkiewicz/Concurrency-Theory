@@ -12,12 +12,14 @@ public class Producent implements Runnable {
 
     private int receivedBuffor;
     private final int index;
+    private final int time;
 
-    public Producent(Bakery bakery, int maxFoodPortion, int index) {
+    public Producent(Bakery bakery, int maxFoodPortion, int index, int time) {
         this.bakery = bakery;
         this.maxFoodPortion = maxFoodPortion;
         this.receivedBuffor = 0;
         this.index = index;
+        this.time = time;
     }
 
     @Override
@@ -27,6 +29,7 @@ public class Producent implements Runnable {
                 int portion = randomPortion(0, maxFoodPortion);
                 this.bakery.addBread(portion);
                 this.receivedBuffor++;
+                Thread.sleep(time);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

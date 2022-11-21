@@ -10,6 +10,8 @@ public class TimeOrchiester {
     private final List<Producent> producerThreads;
     private final List<Customer> customerThreads;
 
+    public boolean isFinished = false;
+
     private int[] timeStamps;
 
 

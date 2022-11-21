@@ -1,5 +1,6 @@
 package lab6.ActiveObject.threads;
 
+import lab6.ActiveObject.TimeOrchiester;
 import lab6.ActiveObject.core.Future;
 import lab6.ActiveObject.Proxy;
 
@@ -11,19 +12,22 @@ public class Producent implements Runnable {
     private Future task = null;
     private int receivedBuffer;
     public final int index;
-
-    public Producent(Proxy proxy, int maxFoodPortion, int index) {
+    private final TimeOrchiester timeOrchiester;
+    private final int time;
+    public Producent(Proxy proxy, int maxFoodPortion, int index, TimeOrchiester timeOrchiester, int time) {
         this.proxy = proxy;
         this.maxFoodPortion = maxFoodPortion;
         this.receivedBuffer = 0;
         this.index = index;
+        this.timeOrchiester = timeOrchiester;
+        this.time = time;
     }
 
     @Override
     public void run() {
-        while (true) {
+        while (!timeOrchiester.isFinished) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(time);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

@@ -8,6 +8,7 @@ public class Producent implements Runnable {
     private int receivedBuffor;
     private final int index;
 
+
     public int getReceivedBuffor() {
         return receivedBuffor;
     }

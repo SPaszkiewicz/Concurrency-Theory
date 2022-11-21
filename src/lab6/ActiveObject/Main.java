@@ -5,6 +5,7 @@ import lab6.ActiveObject.threads.Producent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
@@ -16,32 +17,41 @@ public class Main {
 
     static List<Producent> producerThreads = new ArrayList<>();
 
+    static Random random = new Random();
+
     public static void main(String[] args) {
-        manyCustomerManyProducerManyBuffor();
+        random = new Random();
+        random.setSeed(100);
+//        new int[]{2000, 2000, 2000, 2000, 2000, 2000};
+        for(int opsTime : new int[]{10, 20, 30, 50, 60, 70, 80, 90, 100}) {
+            for(int waitTime : new int[]{10, 20, 30, 50, 60, 70, 80, 90, 100}) {
+                manyCustomerManyProducerManyBuffor(opsTime, waitTime);
+                customerThreads.clear();
+                producerThreads.clear();
+            }
+        }
     }
 
     public static int randomPortion(int min, int max) {
-        return ThreadLocalRandom.current().nextInt(min, max + 1);
+        return random.nextInt(min, max + 1);
     }
-    public static void manyCustomerManyProducerManyBuffor () {
-        Proxy proxy = new Proxy(bufforSize);
+    public static void manyCustomerManyProducerManyBuffor (int opsTime, int waitTime) {
+        TimeOrchiester timer = new TimeOrchiester(producerThreads, customerThreads, new int[]{2000, 2000, 2000, 2000, 2000, 2000});
+        Proxy proxy = new Proxy(bufforSize, timer, opsTime);
 //        Producent biggerProducer = new Producent(proxy, foodPortion, -1);
 //        producerThreads.add(biggerProducer);
 //        new Thread(biggerProducer).start();
 
         for (int i = 0; i < customerNumber; i++) {
-            Producent producer = new Producent(proxy, foodPortion, i);
+            Producent producer = new Producent(proxy, foodPortion, i, timer, waitTime);
             producerThreads.add(producer);
             new Thread(producer).start();
         }
         for (int i = 0; i < producentNumber; i++) {
-            Customer customer = new Customer(proxy, foodPortion, i);
+            Customer customer = new Customer(proxy, foodPortion, i, timer, waitTime);
             customerThreads.add(customer);
             new Thread(customer).start();
         }
-//        TimeOrchiester timer = new TimeOrchiester(producerThreads, customerThreads, new int[]{1000, 2000, 5000, 7000, 10000, 20000});
-//        while (true) {
-//            timer.startProcessing();
-//        }
+        timer.startProcessing();
     }
 }

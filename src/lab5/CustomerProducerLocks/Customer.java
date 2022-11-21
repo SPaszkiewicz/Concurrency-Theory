@@ -12,11 +12,13 @@ public class Customer implements Runnable{
     }
 
     private int receivedBuffor;
-    public Customer (Bakery bakery, int maxFoodPortion, int index) {
+    private final int time;
+    public Customer (Bakery bakery, int maxFoodPortion, int index, int time) {
         this.bakery = bakery;
         this.maxFoodPortion = maxFoodPortion;
         this.receivedBuffor = 0;
         this.index = index;
+        this.time = time;
     }
 
     @Override
@@ -26,6 +28,7 @@ public class Customer implements Runnable{
                 int portion = randomPortion(0, maxFoodPortion);
                 this.bakery.takeBread(portion);
                 this.receivedBuffor++;
+                Thread.sleep(time);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
