@@ -13,22 +13,23 @@ public class Buffer implements CSProcess {
     int hd = -1;
     int tl = -1;
     public Buffer (final One2OneChannelInt[] in, final
-    One2OneChannelInt[] req, final One2OneChannelInt[] out)
-    { this.in = in;
+    One2OneChannelInt[] req, final One2OneChannelInt[] out) {
+        this.in = in;
         this.req = req;
         this.out = out;
     } // constructor
     public void run ()
-    { final Guard[] guards = {in[0].in(), in[1].in(), req[0].in(), req[1].in()};
+    {
+        final Guard[] guards = {in[0].in(), in[1].in(), req[0].in(), req[1].in()};
         final Alternative alt = new Alternative(guards);
         int countdown = 4; // Number of processes running
-        while (countdown > 0)
-        { int index = alt.select();
-            switch (index)
-            { case 0:
+        while (countdown > 0) {
+            int index = alt.select();
+            switch (index) {
+                case 0:
                 case 1: // A Producer is ready to send
-                    if (hd < tl + 11) // Space available
-                    { int item = in[index].in().read();
+                    if (hd < tl + 11) {
+                        int item = in[index].in().read();
                         if (item < 0)
                             countdown--;
                         else

@@ -10,10 +10,10 @@ public class Producer implements CSProcess
         channel = out;
         this.start = start;
     }
-    public void run ()
-    { int item;
-        for (int k = 0; k < 100; k++)
-        { item = (int)(Math.random()*100)+1+start;
+    public void run () {
+        int item;
+        for (int k = 0; k < 100; k++) {
+            item = (int)(Math.random()*100)+1+start;
             channel.out().write(item);
         } // for
         channel.out().write(-1);
