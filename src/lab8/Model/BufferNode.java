@@ -39,15 +39,15 @@ public class BufferNode implements CSProcess {
     public void buildReceiversBranch(ArrayList<CSProcess> activationList) {
         double requiredNodes = Math.ceil((double) numOfProducers / nodePerProducers);
         int numberOfLayers = base2Log(requiredNodes);
-        upperReceiver = new ReceiverNode(numberOfLayers - 1, receiverEndpoints, activationList);
-        lowerReceiver = new ReceiverNode(numberOfLayers - 1, receiverEndpoints, activationList);
+        upperReceiver = new ReceiverNode(numberOfLayers - 1, receiverEndpoints, activationList, numOfProducers);
+        lowerReceiver = new ReceiverNode(numberOfLayers - 1, receiverEndpoints, activationList, numOfProducers);
     }
 
     public void buildContributorsBranch(ArrayList<CSProcess> activationList) {
         double requiredNodes = Math.ceil((double) numOfConsumers / nodePerConsumers);
         int numberOfLayers = base2Log(requiredNodes);
-        upperContributor = new ContributorNode(numberOfLayers - 1, contributorEndpoints, activationList);
-        lowerContributor = new ContributorNode(numberOfLayers - 1, contributorEndpoints, activationList);
+        upperContributor = new ContributorNode(numberOfLayers - 1, contributorEndpoints, activationList, numOfConsumers);
+        lowerContributor = new ContributorNode(numberOfLayers - 1, contributorEndpoints, activationList, numOfConsumers);
 
     }
 
@@ -72,7 +72,7 @@ public class BufferNode implements CSProcess {
         while (true) {
             index = alt.select();
             switch (index) {
-                case 0:
+                case 0 -> {
                     item = upperReceiver.forwardChannel.in().read();
                     if (state == PipeDirection.UPPER) {
                         upperContributor.forwardChannel.out().write(item);
@@ -80,8 +80,8 @@ public class BufferNode implements CSProcess {
                         lowerContributor.forwardChannel.out().write(item);
                     }
                     state = state.switchDirection();
-                    break;
-                case 1:
+                }
+                case 1 -> {
                     item = lowerReceiver.forwardChannel.in().read();
                     if (state == PipeDirection.UPPER) {
                         upperContributor.forwardChannel.out().write(item);
@@ -89,7 +89,7 @@ public class BufferNode implements CSProcess {
                         lowerContributor.forwardChannel.out().write(item);
                     }
                     state = state.switchDirection();
-                    break;
+                }
             }
         }
     }

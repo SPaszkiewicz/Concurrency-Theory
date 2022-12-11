@@ -10,16 +10,19 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Consumer implements CSProcess {
     private final ArrayList<ContributorNode> channels;
     private final int numberOfChannels;
+    private final int index;
 
-    public Consumer (ArrayList<ContributorNode> channels, ArrayList<CSProcess> activationList) {
+    public Consumer (ArrayList<ContributorNode> channels, ArrayList<CSProcess> activationList, int index) {
         this.channels = channels;
         this.numberOfChannels = channels.size();
+        this.index = index;
         activationList.add(this);
     }
     public void run () {
         while(true) {
             int choice = randomPipe(0, numberOfChannels);
-            int item = channels.get(choice).pushingChannel.in().read();
+            channels.get(choice).informingChannel[index].out().write(1);
+            int item = channels.get(choice).pushingChannel[index].in().read();
             System.out.println("Received " + item);
         }
     }

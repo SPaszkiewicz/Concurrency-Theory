@@ -20,10 +20,10 @@ public class Main {
         ArrayList<CSProcess> activationList = new ArrayList<>();
         BufferNode buffer = new BufferNode(numOfProducers, numOfConsumers, nodePerConsumers, nodePerProducers, activationList);
         for (int i = 0; i < numOfProducers; i++) {
-            new Consumer(buffer.getContributorEndpoints(), activationList);
+            new Consumer(buffer.getContributorEndpoints(), activationList, i);
         }
         for (int i = 0; i < numOfConsumers; i++) {
-            new Producer(buffer.getReceiverEndpoints(), activationList);
+            new Producer(buffer.getReceiverEndpoints(), activationList, i);
         }
         CSProcess[] procList = new CSProcess[activationList.size()];
         activationList.toArray(procList);
