@@ -51,14 +51,11 @@ public class ContributorNode implements CSProcess {
                 guards[i] = informingChannel[i].in();
             }
             final Alternative alt = new Alternative(guards);
-            int loop = 0;
             while (true) {
-                System.out.println(loop);
+                item = forwardChannel.in().read();
                 index = alt.select();
                 informingChannel[index].in().read();
-                item = forwardChannel.in().read();
                 pushingChannel[index].out().write(item);
-                loop++;
             }
         }
         while (true) {
