@@ -12,10 +12,10 @@ import org.jcsp.lang.Parallel;
 import java.util.ArrayList;
 
 public class Main {
-    static int numOfProducers = 320;
-    static int numOfConsumers = 320;
-    static int nodePerConsumers = 80;
-    static int nodePerProducers = 80;
+    static int numOfProducers = 20;
+    static int numOfConsumers = 20;
+    static int nodePerConsumers = 5;
+    static int nodePerProducers = 5;
     public static void main (String[] args) {
         ArrayList<CSProcess> activationList = new ArrayList<>();
         BufferNode buffer = new BufferNode(numOfProducers, numOfConsumers, nodePerConsumers, nodePerProducers, activationList);
@@ -27,6 +27,7 @@ public class Main {
         }
         CSProcess[] procList = new CSProcess[activationList.size()];
         activationList.toArray(procList);
+        new Thread(new StatisticsGetter(procList)).start();
         Parallel par = new Parallel(procList);
         par.run();
     }

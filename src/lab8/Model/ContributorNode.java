@@ -1,16 +1,18 @@
 package lab8.Model;
 
+import lab8.Stats;
 import org.jcsp.lang.*;
 
 import java.util.ArrayList;
 
-public class ContributorNode implements CSProcess {
+public class ContributorNode implements CSProcess, Stats {
     private final int numOfLayers;
     private ContributorNode upperContributor;
     private ContributorNode lowerContributor;
     public One2OneChannelInt forwardChannel = Channel.one2oneInt();
     public One2OneChannelInt[] pushingChannel;
     public One2OneChannelInt[] informingChannel;
+    private int operations;
 
     public ContributorNode(
             int numOfLayers,
@@ -56,6 +58,7 @@ public class ContributorNode implements CSProcess {
                 index = alt.select();
                 informingChannel[index].in().read();
                 pushingChannel[index].out().write(item);
+                operations++;
             }
         }
         while (true) {
@@ -66,6 +69,12 @@ public class ContributorNode implements CSProcess {
                 lowerContributor.forwardChannel.out().write(item);
             }
             state = state.switchDirection();
+            operations++;
         }
+    }
+
+    @Override
+    public int getOperations() {
+        return operations;
     }
 }

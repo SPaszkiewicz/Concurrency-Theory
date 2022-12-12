@@ -1,12 +1,13 @@
 package lab8.Model;
 
+import lab8.Stats;
 import org.jcsp.lang.Alternative;
 import org.jcsp.lang.CSProcess;
 import org.jcsp.lang.Guard;
 
 import java.util.ArrayList;
 
-public class BufferNode implements CSProcess {
+public class BufferNode implements CSProcess, Stats {
     private final int numOfConsumers;
     private final int numOfProducers;
     private final int nodePerConsumers;
@@ -17,6 +18,8 @@ public class BufferNode implements CSProcess {
     private ContributorNode lowerContributor;
     private final ArrayList<ReceiverNode> receiverEndpoints = new ArrayList<>();
     private final ArrayList<ContributorNode> contributorEndpoints = new ArrayList<>();
+
+    private int operations;
 
     public BufferNode(
             int numOfConsumers,
@@ -32,8 +35,6 @@ public class BufferNode implements CSProcess {
         activationList.add(this);
         buildReceiversBranch(activationList);
         buildContributorsBranch(activationList);
-        System.out.println(contributorEndpoints);
-        System.out.println(receiverEndpoints);
     }
 
     public void buildReceiversBranch(ArrayList<CSProcess> activationList) {
@@ -91,6 +92,12 @@ public class BufferNode implements CSProcess {
                     state = state.switchDirection();
                 }
             }
+            operations++;
         }
+    }
+
+    @Override
+    public int getOperations() {
+        return operations;
     }
 }

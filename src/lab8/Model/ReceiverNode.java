@@ -9,7 +9,7 @@ public class ReceiverNode implements CSProcess {
     private final int numOfLayers;
     private ReceiverNode upperReceiver;
     private ReceiverNode lowerReceiver;
-
+    private int operations;
     public One2OneChannelInt[] listeningChannel;
 
     public One2OneChannelInt forwardChannel = Channel.one2oneInt();
@@ -49,6 +49,7 @@ public class ReceiverNode implements CSProcess {
                 index = alt.select();
                 item = listeningChannel[index].in().read();
                 forwardChannel.out().write(item);
+                operations++;
             }
 
         } else {
@@ -66,7 +67,12 @@ public class ReceiverNode implements CSProcess {
                         forwardChannel.out().write(item);
                     }
                 }
+                operations++;
             }
         }
+    }
+
+    public int getOperations() {
+        return operations;
     }
 }
